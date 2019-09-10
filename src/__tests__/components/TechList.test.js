@@ -4,6 +4,10 @@ import { render, fireEvent, cleanup } from "@testing-library/react";
 import TechList from "~/components/TechList";
 
 describe("TechList component", () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
   it("should be able to add new tech", () => {
     const { getByText, getByTestId, debug, getByLabelText } = render(
       <TechList />
@@ -13,7 +17,7 @@ describe("TechList component", () => {
 
     fireEvent.submit(getByTestId("tech-form"));
 
-    debug();
+    //debug();
 
     expect(getByTestId("tech-list")).toContainElement(getByText("Node.js"));
     expect(getByLabelText("Tech")).toHaveValue("");
@@ -29,6 +33,10 @@ describe("TechList component", () => {
 
     ({ getByTestId, getByLabelText, getByText } = render(<TechList />));
 
+    expect(localStorage.setItem).toHaveBeenCalledWith(
+      "techs",
+      JSON.stringify(["Node.js"])
+    );
     expect(getByTestId("tech-list")).toContainElement(getByText("Node.js"));
   });
 });
