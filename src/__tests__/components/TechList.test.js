@@ -16,5 +16,6 @@ describe("TechList component", () => {
     debug();
 
     expect(getByTestId("tech-list")).toContainElement(getByText("Node.js"));
+    expect(getByLabelText("Tech")).toHaveValue("");
   });
 });
