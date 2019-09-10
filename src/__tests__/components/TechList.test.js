@@ -5,11 +5,13 @@ import TechList from "~/components/TechList";
 
 describe("TechList component", () => {
   it("should be able to add new tech", () => {
-    const { getByText, getByTestId, debug } = render(<TechList />);
+    const { getByText, getByTestId, debug, getByLabelText } = render(
+      <TechList />
+    );
 
-    debug();
+    fireEvent.change(getByLabelText("Tech"), { target: { value: "Node.js" } });
 
-    fireEvent.click(getByText("Adicionar"));
+    fireEvent.submit(getByTestId("tech-form"));
 
     debug();
 
