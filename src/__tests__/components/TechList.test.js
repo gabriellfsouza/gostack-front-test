@@ -1,42 +1,60 @@
 import React from "react";
-import { render, fireEvent, cleanup } from "@testing-library/react";
+import { useSelector } from "react-redux";
+import { render /*fireEvent, cleanup*/ } from "@testing-library/react";
 
 import TechList from "~/components/TechList";
 
+jest.mock("react-redux");
+
 describe("TechList component", () => {
-  beforeEach(() => {
-    localStorage.clear();
-  });
-
-  it("should be able to add new tech", () => {
-    const { getByText, getByTestId, debug, getByLabelText } = render(
-      <TechList />
+  it("should render tech list", () => {
+    useSelector.mockImplementation(cb =>
+      cb({
+        techs: ["Node.js", "ReactJS"]
+      })
     );
 
-    fireEvent.change(getByLabelText("Tech"), { target: { value: "Node.js" } });
+    const { getByText, getByTestId, debug } = render(<TechList />);
 
-    fireEvent.submit(getByTestId("tech-form"));
-
-    //debug();
+    // debug();
 
     expect(getByTestId("tech-list")).toContainElement(getByText("Node.js"));
-    expect(getByLabelText("Tech")).toHaveValue("");
+    expect(getByTestId("tech-list")).toContainElement(getByText("ReactJS"));
   });
 
-  it("should store techs in storage", () => {
-    let { getByText, getByTestId, getByLabelText } = render(<TechList />);
+  // beforeEach(() => {
+  //   localStorage.clear();
+  // });
 
-    fireEvent.change(getByLabelText("Tech"), { target: { value: "Node.js" } });
-    fireEvent.submit(getByTestId("tech-form"));
+  // it("should be able to add new tech", () => {
+  //   const { getByText, getByTestId, debug, getByLabelText } = render(
+  //     <TechList />
+  //   );
 
-    cleanup();
+  //   fireEvent.change(getByLabelText("Tech"), { target: { value: "Node.js" } });
 
-    ({ getByTestId, getByLabelText, getByText } = render(<TechList />));
+  //   fireEvent.submit(getByTestId("tech-form"));
 
-    expect(localStorage.setItem).toHaveBeenCalledWith(
-      "techs",
-      JSON.stringify(["Node.js"])
-    );
-    expect(getByTestId("tech-list")).toContainElement(getByText("Node.js"));
-  });
+  //   //debug();
+
+  //   expect(getByTestId("tech-list")).toContainElement(getByText("Node.js"));
+  //   expect(getByLabelText("Tech")).toHaveValue("");
+  // });
+
+  // it("should store techs in storage", () => {
+  //   let { getByText, getByTestId, getByLabelText } = render(<TechList />);
+
+  //   fireEvent.change(getByLabelText("Tech"), { target: { value: "Node.js" } });
+  //   fireEvent.submit(getByTestId("tech-form"));
+
+  //   cleanup();
+
+  //   ({ getByTestId, getByLabelText, getByText } = render(<TechList />));
+
+  //   expect(localStorage.setItem).toHaveBeenCalledWith(
+  //     "techs",
+  //     JSON.stringify(["Node.js"])
+  //   );
+  //   expect(getByTestId("tech-list")).toContainElement(getByText("Node.js"));
+  // });
 });
