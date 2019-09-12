@@ -14,7 +14,7 @@
   },
   "jest": {
     "testMatch": [
-      "**/__tests__/**/*.test.js"
+      "src/**/__tests__/**/*.test.js"
     ],
     "moduleNameMapper": {
       "^~/(.*)": "<rootDir>/src/$1"
@@ -22,12 +22,19 @@
     "setupFilesAfterEnv": [
       "@testing-library/jest-dom/extend-expect",
       "jest-localstorage-mock"
+    ],
+    "coverageDirectory": "coverage",
+    "collectCoverageFrom": [
+      "!src/index.js",
+      "!src/App.js",
+      "!src/services/api.js"
     ]
   },
   "scripts": {
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
+    "coverage": "react-app-rewired test --coverage --watchAll=false",
     "eject": "react-scripts eject"
   },
   "browserslist": {
